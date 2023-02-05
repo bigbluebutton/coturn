@@ -1,3 +1,10 @@
+coturn (4.6.1-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+
+ -- Dominik George <natureshadow@debian.org>  Sun, 05 Feb 2023 11:03:55 +0100
+
 coturn (4.5.2-3.1) unstable; urgency=medium
 
   * Non-maintainer upload.
