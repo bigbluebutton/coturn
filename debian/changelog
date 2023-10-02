@@ -1,3 +1,164 @@
+coturn (4.6.2-1bbb1) jammy; urgency=medium
+
+  [ Pavel Punsky ]
+  * [9af9f63] Fix renegotiation flag for older version of openssl (#978)
+  * [4ce784a] Improve openssl3 and FIPS support (#955)
+  * [9370bb7] Fix a warning (#988)
+  * [ae25963] Replace bzero with memset (#986)
+  * [bd9e44d] Replace bcopy with memcpy (#991)
+  * [2cb395c] Fix issues reported by cppcheck (#987)
+  * [4bab2ad] Use a single SSL context object (#989)
+  * [e87c425] Fix TLS1.3 support
+  * [73c14d6] Replace references to non-existent pdf file with links (#1002)
+  * [05c0b6e] Build CI with prometheus support (#999)
+  * [a3d338e] Silence warnings by converting STRCPY to strncpy calls (#995)
+  * [ae26739] Use single SSL_CTX for DTLS support (#996)
+  * [d9e74af] Cleanup unused include of header files (#1004)
+  * [3492644] Remove debug publish to redis (#1008)
+  * [080ca02] Update libtelnet to 0.23 (portability issues) (#1005)
+  * [0c4c86c] Fix multiple warnings in libtelnet.c file (#1011)
+  * [1467a5b] Better detect SCTP protocol (#1016)
+  * [af9bc12] Sanitize DB connection string before printing to log (#1020)
+  * [c14e3da] Fix 2 warnings in code (#1027)
+  * [d72a2a8] Cleanup openssl initialization (#1012)
+  * [af48249] Fix compilation warnings for functions with no arguments (#1053)
+  * [181216e] Reduce usage of TURN_NO_PROMETHEUS (#1023)
+  * [6ff9823] Reduce usage of TURN_NO_HIREDIS macros (#1022)
+  * [4995b64] Fix warnings (unused arguments, undeclared function) (#1057)
+  * [2716ed0] Simplify defines for macOS platform (#1058)
+  * [d3f0ad3] Update openssl API use to non-deprecated version (#1072)
+  * [730996b] Add macOS build action (#1059)
+  * [da2ae17] Fix duplicate prometheus metric report (#1079)
+  * [95373d3] Cleanup logs on turnserver start (#1088)
+  * [38088ba] Update Changelog and Readme (#1087)
+  * [24a3551] Delete NOTE
+  * [2b0e9fd] Delete .travis.yml (#1095)
+  * [fe46a71] Delete TODO (#1094)
+  * [5484227] Scripts to generate AUTHORS and ChangeLog (#1101)
+  * [22e5104] Generate AUTHORS as Markdown, update references (#1102)
+  * [5d44f50] Reduce code duplication when printing userdb (#1103)
+  * [eff1f9a] Set string bytes to null to prevent random origin (#1114)
+  * [7038763] Add STUN request/response/error prometheus counters (#1115)
+  * [85c11b6] Move and split documentation files (#1096)
+  * [46a38d1] Delete LICENSE.OpenSSL
+  * [79fb655] Remove unused include that breaks OpenBSD (#1165)
+  * [af8a057] Update version to 4.6.2 (#1174)
+
+  [ Robert Scheck ]
+  * [50f33bf] Preserve file timestamps when using install(1) (#983)
+
+  [ Gustavo Garcia ]
+  * [0f0197e] Add CI tests in older ubuntu version (#981)
+  * [27e5dd6] Change rpm systemd service type from notify to exec (#1043)
+  * [d9108a4] Add clang format rules and checks (#935)
+  * [fae5d27] Add contributing guidelines (#1135)
+  * [0b01b9b] Fix brew for MacOS CI build (#1136)
+  * [43b430a] Update CONTRIBUTING.md
+
+  [ Joachim Bauch ]
+  * [57f5a25] Use epoll for promhttp server if supported.  (#997)
+
+  [ Tom Bevan ]
+  * [9a6393e] Malformed response to mobility refresh request (#1006)
+
+  [ Arjun ]
+  * [716417e] Fix : Issue 51563 in oss-fuzz (#1010)
+  * [dda0c99] fuzzing support (#982)
+
+  [ Thibaut ACKERMANN ]
+  * [13ecb7d]  Redis memleaks and socketleaks (#1015)
+  * [242eb78] Prometheus: make sure microhttpd starts using epoll if supported (#1173)
+
+  [ Scott Godin ]
+  * [5d38fba] ignore raw UDP if no_udp is enabled (#1031)
+  * [baa69d0] fix bug in calls to ssl_read and ssl_send where extra verbose flag goes missing (#1033)
+  * [a7316a3] created netengine.c get_relay_server utility method to reduce code duplication (#1032)
+  * [cfa5f66] Backlog fifo (#1029)
+  * [7fb7b1d] Log threadId to logs to aid in multi-threaded debugging. (#1030)
+
+  [ Gregor Jasny ]
+  * [24480b8] Fix variable argument handling (#1042)
+  * [6f14716] Use %zu format specifier for size_t (#1040)
+  * [f488aa6] Fix off-by-one when terminating gcm_nonce (#1039)
+  * [1148ed7] Add missing comma (#1041)
+  * [8c15f4b] Fix warnings (#1046)
+  * [d992d0c] Fix resource leaks (#1048)
+  * [5d39834] Do not discard qualifiers in free() (#1065)
+  * [19ee59c] Properly calculate size for sm_allocated (#1063)
+  * [83b8ddb] Check and fix format string for turn_log_func_default (#1064)
+  * [8cb2282] Use khash 0.2.8 (#1047)
+
+  [ Hyorin Choi ]
+  * [ab12920] Update turnserver.conf (#1009)
+
+  [ Kang Lin ]
+  * [40c99db] Support Windows MSVC (#855)
+  * [ae134d8] Use c11 standard See: #1055 (#1056)
+
+  [ Yoshiki Kadoshita ]
+  * [78674ae] Remove unnecessary declaration from header file (#1052)
+  * [9a9e967] Update to fix duplicate stdout log output (#1054)
+
+  [ Emil Ljungdahl ]
+  * [c4f670f] WINDOWS: unsigned long should not be used to store pointers (#1055)
+  * [15153f5] Repair MSVC CI builds (#1066)
+  * [9fa8af6] Use inline functions for errno checks (#1123)
+  * [980ef8f] Implement non-blocking recvfrom on Windows (#1124)
+
+  [ Samuel Marks ]
+  * [945f290] [README.md] Reflect new native Windows build support in documentation (#1060)
+
+  [ dependabot[bot] ]
+  * [99d2621] Bump actions/checkout from 2 to 3 (#1068)
+  * [a05814f] Bump actions/upload-artifact from 2 to 3 (#1067)
+  * [bf5cfb5] Bump actions/cache from 2 to 3 (#1084)
+
+  [ Paul Kramer ]
+  * [5a28394] feature(1026): add sessioncount to prometheus metrics (#1075)
+  * [83c25c4] Fix memory corruption on socket close (#1113)
+  * [72e2605] bugfix: fix broken type label of turn_total_allocations gauge (#1119)
+  * [39d293c] Fix wrong usage of C-sytle in place generated array (#1122)
+
+  [ Erik Moqvist ]
+  * [e55bbc0] Optional build info compiled into turnserver binary (#1083)
+
+  [ Kai Ren ]
+  * [a999df6] Rework Docker CI pipeline to be granular (#1092)
+
+  [ tyranron ]
+  * [9d844cd] Support `linux/386` platform for Docker image
+  * [473e40a] Omit changing README in container registries on `edge` Docker image pushes
+  * [007504a] Fix `quay.io` authentication in Docker CI
+  * [7feae7a] Fix tests for `linux/386` Docker image platform
+  * [f41aee2] Fix tagging released Docker image on CI
+  * [491b231] Fix ChangeLog for 4.6.1 version
+  * [f558842] Prepare 4.6.1-r1 release of Docker image
+  * [cc2560b] Update Alpine to 3.16.4 version and Debian "bullseye" to 20230208 snapshot to fix CVE-2023-0286 (and friends) in Docker image
+  * [0a3d510] Update Alpine to 3.16.5 version and Debian "bullseye" to 20230320 snapshot to fix CVE-2023-0464 and CVE-2023-0465 in Docker image
+
+  [ Molly Miller ]
+  * [af4f190] Fix inverted logic in TLS configuration options (#1105)
+  * [bc1678c] Regenerate manual pages from README files (#1117)
+  * [82646a9] Add explicit SIGTERM and SIGINT handlers. (#1106)
+  * [902cb99] Add configuration option for TLS 1.3 ciphersuites (#1118)
+
+  [ Jasper ]
+  * [8f8038a] Use the actual redis connection string to connect, not the sanitized one (#1141)
+
+  [ r3g_5z ]
+  * [212e782] use santisied psql string (#1144)
+
+  [ Shu Muto ]
+  * [629face] Fix arguments expansion in `docker-entrypoint.sh` (#1110, #902)
+
+  [ Stefan Sundin ]
+  * [43f8b87] Fix typo in mainrelay.c (#1169)
+
+  [ Cédric DIJOUX ]
+  * [67beeb8] Fix MSVC CI build (#1182)
+
+ -- Calvin Walton <calvin.walton@kepstin.ca>  Mon, 02 Oct 2023 13:04:43 -0400
+
 coturn (4.6.1-1) unstable; urgency=medium
 
   * Team upload.
