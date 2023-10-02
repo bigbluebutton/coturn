@@ -1,0 +1,15 @@
+diff --git a/configure b/configure
+index fc75021..7b3c95d 100755
+--- a/configure
++++ b/configure
+@@ -524,9 +524,7 @@ fi
+ 
+ TMPDIR="."
+ 
+-if [ -d /var/tmp ] ; then
+-  TMPDIR="/var/tmp"
+-elif [ -d /tmp ] ; then
++if [ -d /tmp ] ; then
+   TMPDIR=/tmp
+ fi
+ 
