@@ -1,0 +1,86 @@
+name: Package build
+on:
+  push:
+    branches:
+      - debian/master
+    tags:
+      - "debian/**"
+
+jobs:
+  ubuntu:
+    strategy:
+      matrix:
+        UBUNTU_VERSION: [ "22.04" ]
+        include:
+          - UBUNTU_VERSION: "22.04"
+            UBUNTU_CODENAME: jammy
+    runs-on: ubuntu-latest
+    container: ubuntu:${{ matrix.UBUNTU_VERSION }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Install debian packaging devscripts
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends debhelper devscripts equivs git-buildpackage pristine-tar
+
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          path: coturn
+          fetch-depth: 0
+
+      - name: Set debian package version
+        env:
+          DEBFULLNAME: GitHub Actions
+          DEBEMAIL: hostmaster@blindsidenetworks.com
+          UBUNTU_CODENAME: ${{ matrix.UBUNTU_CODENAME }}
+          UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
+        run: |
+          pwd
+          cd coturn
+          DPKG_VERSION=$(dpkg-parsechangelog -S version)
+          DPKG_DISTRIBUTION=$(dpkg-parsechangelog -S distribution)
+          GIT_SEPARATOR='+'
+          DCH_BACKPORT=
+          GIT_TAG=$(git describe --tags --abbrev=0)
+          GIT_DPKG_VERSION=${GIT_TAG#debian/}
+          GIT_DPKG_VERSION=${GIT_DPKG_VERSION//%/:}
+          if [[ $DPKG_DISTRIBUTION == UNRELEASED ]] || [[ $DPKG_VERSION != $GIT_DPKG_VERSION ]]; then
+            GIT_SEPARATOR='~0+'
+          fi
+          if [[ $DPKG_DISTRIBUTION != UNRELEASED ]] && [[ $DPKG_DISTRIBUTION != $UBUNTU_CODENAME ]]; then
+            DCH_BACKPORT="~$UBUNTU_VERSION"
+          fi
+          GIT_DESCRIBE=$(git describe --tags)
+          GIT_EXTRA=${GIT_DESCRIBE#${GIT_TAG}}
+          GIT_EXTRA=${GIT_EXTRA/-/$GIT_SEPARATOR}
+          GIT_EXTRA=${GIT_EXTRA//-/.}
+          DCH_VERSION="${DPKG_VERSION}${DCH_BACKPORT}${GIT_EXTRA}"
+          echo "DCH_VERSION=${DCH_VERSION}" >> $GITHUB_ENV
+          dch --newversion "${DCH_VERSION}" --force-bad-version --distribution "${UBUNTU_CODENAME}" "Automatic Build"
+
+      - name: Cleanup .github directory
+        run: |
+          rm -r coturn/.github
+
+      - name: Install build dependencies
+        run: |
+          cd coturn
+          DEBIAN_FRONTEND=noninteractive mk-build-deps -i -r -t 'apt-get -y -o Debug::pkgProblemResolver=yes --no-install-recommends'
+          rm -vf coturn-build-deps_*
+
+      - name: Build package
+        run: |
+          cd coturn
+          git branch upstream/latest refs/remotes/origin/upstream/latest
+          git branch pristine-tar refs/remotes/origin/pristine-tar
+          gbp buildpackage --git-ignore-new --git-ignore-branch --no-sign
+          ls ..
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ubuntu-${{ matrix.UBUNTU_VERSION }}
+          path: "*.deb"
